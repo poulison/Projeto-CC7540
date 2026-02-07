@@ -1,8 +1,12 @@
 # Projeto-CC7540
 
-## Integrantes
-- Eric Song Watanabe
-- Paulo Andre de Oliveira Hirata
-- Victor Merker Binda
-- Victor Pimentel Lario
-- Rafael Iamashita Becsei
+## Time
+
+|     Integrantes           |Funções             |
+|------------------------|----------------------|
+|Rafael Iamashita Becsei|Product Owner          |
+|Victor Pimentel Lario  |Scrum Master           |
+|Eric Song Watanabe     |Dev Team               |  
+|Paulo Andre de Oliveira Hirata|Dev Team        |  
+|Victor Merker Binda    |Dev Team               |
+
