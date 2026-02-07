@@ -1,4 +1,4 @@
-# Projeto-CC7540 | Banco de Investimento
+# Projeto-CC7540 | APP de controle financeiro 
 
 ## Time
 
