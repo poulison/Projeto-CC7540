@@ -1,4 +1,4 @@
-# Projeto-CC7540
+# Projeto-CC7540 | Banco de Investimento
 
 ## Time
 
