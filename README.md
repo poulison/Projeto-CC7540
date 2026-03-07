@@ -15,4 +15,4 @@ Nosso projeto tem a proposta de criar um aplicativo de controle financeiro para 
 
 ## Objetivo Sprint 1
 Para o primeiro sprint temos o objetivo de começar e implementar os funcionamentos basicos do nosso site, definimos as historias de usuário mais relevantes e decidimos desenvolvê-las para essa primeira parte.
-<img width="1489" height="905" alt="image" src="https://github.com/user-attachments/assets/8b964907-f4a6-45b7-9fce-788c727f2646" />
+<img width="1618" height="776" alt="image" src="https://github.com/user-attachments/assets/ca72fca7-f0e0-4d44-b049-b9b01f17c504" />
