@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import Base, engine
-from app.routes import auth
+from app.routes import auth, renda, gasto, resumo
 
 app = FastAPI(
     title="Finance App API",
@@ -20,6 +20,9 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router, prefix="/auth", tags=["Autenticação"])
+app.include_router(renda.router, prefix="/renda", tags=["Renda"])
+app.include_router(gasto.router, prefix="/gastos", tags=["Gastos"])
+app.include_router(resumo.router, prefix="/resumo", tags=["Resumo"])
 
 @app.get("/")
 def root():
