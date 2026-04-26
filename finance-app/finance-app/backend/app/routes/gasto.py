@@ -9,6 +9,8 @@ from app.services.gasto_service import (
     classificar_gasto, total_gastos_mes
 )
 from app.models.user import User
+from app.models.gasto import Gasto
+from fastapi import HTTPException
 from datetime import datetime
 
 router = APIRouter()
@@ -29,6 +31,15 @@ def gastos_mes_atual(
     agora = datetime.now()
     return listar_gastos_mes(db, current_user.id, agora.month, agora.year)
 
+@router.get("/por-mes/{ano}/{mes}", response_model=List[GastoResponse])
+def gastos_por_mes(
+    ano: int,
+    mes: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return listar_gastos_mes(db, current_user.id, mes, ano)
+
 @router.get("/total-mes", response_model=dict)
 def total_mes_atual(
     db: Session = Depends(get_db),
@@ -46,3 +57,18 @@ def classificar(
     current_user: User = Depends(get_current_user)
 ):
     return classificar_gasto(db, gasto_id, dados, current_user.id)
+
+@router.delete("/{gasto_id}", status_code=204)
+def deletar_gasto(
+    gasto_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    gasto = db.query(Gasto).filter(
+        Gasto.id == gasto_id,
+        Gasto.user_id == current_user.id
+    ).first()
+    if not gasto:
+        raise HTTPException(status_code=404, detail="Gasto não encontrado.")
+    db.delete(gasto)
+    db.commit()

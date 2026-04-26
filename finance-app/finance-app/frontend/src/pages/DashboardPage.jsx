@@ -61,7 +61,7 @@ const styles = `
   .main { margin-left: 240px; flex: 1; padding: 40px; }
   .topbar {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
   .page-title {
     font-family: 'Playfair Display', serif;
@@ -80,7 +80,18 @@ const styles = `
     font-size: 13px; font-weight: 700; color: #fff;
   }
 
-  /* CARDS TOPO */
+  .mes-selector {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  }
+  .mes-selector label { font-size: 14px; font-weight: 600; color: #374151; }
+  .mes-selector select {
+    padding: 8px 14px; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; color: #0f172a; background: #fff;
+    outline: none; cursor: pointer;
+  }
+  .mes-selector select:focus { border-color: #10b981; }
+
   .cards-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 20px; margin-bottom: 24px;
@@ -103,52 +114,40 @@ const styles = `
   .card-value.blue { color: #3b82f6; }
   .card-sub { font-size: 13px; color: #94a3b8; }
 
-  /* RESUMO */
   .resumo-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 20px; margin-bottom: 24px;
   }
-
   .resumo-card {
     background: #fff; border-radius: 16px; padding: 24px;
     border: 1px solid #f1f5f9;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
-
   .resumo-title {
     font-size: 14px; font-weight: 700; color: #0f172a;
     margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
   }
-
   .resumo-row {
     display: flex; justify-content: space-between; align-items: center;
     padding: 10px 0; border-bottom: 1px solid #f1f5f9;
   }
   .resumo-row:last-child { border-bottom: none; }
-
-  .resumo-row-label { font-size: 14px; color: #64748b; display: flex; align-items: center; gap: 8px; }
+  .resumo-row-label { font-size: 14px; color: #64748b; }
   .resumo-row-value { font-size: 14px; font-weight: 700; color: #0f172a; }
   .resumo-row-value.green { color: #10b981; }
   .resumo-row-value.red { color: #ef4444; }
 
-  /* BARRA DE PROGRESSO */
   .progress-wrap { margin-top: 16px; }
   .progress-label {
     display: flex; justify-content: space-between;
     font-size: 13px; color: #64748b; margin-bottom: 8px;
   }
-  .progress-bar {
-    height: 10px; background: #f1f5f9; border-radius: 100px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; border-radius: 100px;
-    transition: width 0.5s ease;
-  }
+  .progress-bar { height: 10px; background: #f1f5f9; border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; transition: width 0.5s ease; }
   .progress-fill.safe { background: linear-gradient(90deg, #10b981, #34d399); }
   .progress-fill.warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
   .progress-fill.danger { background: linear-gradient(90deg, #ef4444, #f87171); }
 
-  /* CATEGORIA */
   .cat-row {
     display: flex; align-items: center; justify-content: space-between;
     padding: 8px 0;
@@ -165,7 +164,6 @@ const styles = `
   .cat-bar-fill { height: 100%; background: #3b82f6; border-radius: 100px; }
   .cat-value { font-size: 13px; font-weight: 700; color: #0f172a; min-width: 80px; text-align: right; }
 
-  /* AÇÕES */
   .actions-row { display: flex; gap: 12px; margin-bottom: 24px; }
   .btn-add {
     display: flex; align-items: center; gap: 8px; padding: 12px 20px;
@@ -181,7 +179,6 @@ const styles = `
     box-shadow: 0 4px 15px rgba(59,130,246,0.3);
   }
 
-  /* GASTOS */
   .section-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 14px; }
   .gastos-list { display: flex; flex-direction: column; gap: 10px; }
   .gasto-item {
@@ -189,7 +186,9 @@ const styles = `
     border: 1px solid #f1f5f9; display: flex;
     align-items: center; justify-content: space-between;
     box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: box-shadow 0.15s;
   }
+  .gasto-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
   .gasto-left { display: flex; align-items: center; gap: 12px; }
   .gasto-icon {
     width: 38px; height: 38px; border-radius: 10px;
@@ -207,7 +206,15 @@ const styles = `
   .badge-essencial { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
   .badge-nao-essencial { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
 
-  /* MODAL */
+  .btn-delete {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: #fef2f2; border: 1px solid #fecaca;
+    color: #ef4444; font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .btn-delete:hover { background: #ef4444; color: #fff; }
+
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.5);
     backdrop-filter: blur(4px); display: flex;
@@ -230,9 +237,9 @@ const styles = `
     width: 100%; padding: 12px 14px; background: #f8fafc;
     border: 1.5px solid #e2e8f0; border-radius: 10px;
     font-family: 'DM Sans', sans-serif; font-size: 15px;
-    color: #0f172a; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    color: #0f172a; outline: none; transition: border-color 0.2s;
   }
-  .form-input:focus { border-color: #10b981; background: #fff; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+  .form-input:focus { border-color: #10b981; background: #fff; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .toggle-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -285,6 +292,29 @@ const styles = `
   @keyframes spin { to { transform: rotate(360deg); } }
   .empty-state { text-align: center; padding: 40px; color: #94a3b8; }
   .empty-icon { font-size: 40px; margin-bottom: 10px; }
+
+  .confirm-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px); display: flex;
+    align-items: center; justify-content: center; z-index: 200;
+  }
+  .confirm-box {
+    background: #fff; border-radius: 16px; padding: 28px;
+    width: 100%; max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  .confirm-icon { font-size: 40px; margin-bottom: 12px; }
+  .confirm-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .confirm-sub { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+  .confirm-actions { display: flex; gap: 10px; }
+  .btn-danger {
+    flex: 1; padding: 12px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600; border: none;
+    border-radius: 10px; cursor: pointer;
+  }
 `;
 
 function fmt(v) {
@@ -299,22 +329,24 @@ function getProgressClass(pct) {
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
+  const agora = new Date();
+
+  const [mes, setMes] = useState(agora.getMonth() + 1);
+  const [ano] = useState(agora.getFullYear());
   const [resumo, setResumo] = useState(null);
   const [gastos, setGastos] = useState([]);
   const [renda, setRenda] = useState(null);
 
   const [modalRenda, setModalRenda] = useState(false);
   const [modalGasto, setModalGasto] = useState(false);
+  const [gastoParaDeletar, setGastoParaDeletar] = useState(null);
 
   const [formRenda, setFormRenda] = useState({
-    valor: "", descricao: "",
-    mes: new Date().getMonth() + 1,
-    ano: new Date().getFullYear()
+    valor: "", descricao: "", mes: agora.getMonth() + 1, ano: agora.getFullYear()
   });
-
   const [formGasto, setFormGasto] = useState({
     valor: "", descricao: "", categoria: "Alimentação",
-    essencial: false, data: new Date().toISOString().split("T")[0]
+    essencial: false, data: agora.toISOString().split("T")[0]
   });
 
   const [loading, setLoading] = useState(false);
@@ -324,8 +356,8 @@ export default function DashboardPage() {
   async function fetchDados() {
     try {
       const [res, g, r] = await Promise.all([
-        api.get("/resumo/mensal").catch(() => ({ data: null })),
-        api.get("/gastos/mes-atual").catch(() => ({ data: [] })),
+        api.get(`/resumo/mensal/${ano}/${mes}`).catch(() => ({ data: null })),
+        api.get(`/gastos/por-mes/${ano}/${mes}`).catch(() => ({ data: [] })),
         api.get("/renda/mes-atual").catch(() => ({ data: null })),
       ]);
       setResumo(res.data);
@@ -334,7 +366,7 @@ export default function DashboardPage() {
     } catch { }
   }
 
-  useEffect(() => { fetchDados(); }, []);
+  useEffect(() => { fetchDados(); }, [mes]);
 
   async function handleSubmitRenda(e) {
     e.preventDefault();
@@ -362,8 +394,7 @@ export default function DashboardPage() {
     setError(""); setSuccess("");
     if (!formGasto.valor || Number(formGasto.valor) <= 0)
       return setError("Informe um valor positivo.");
-    if (!formGasto.descricao)
-      return setError("Informe uma descrição.");
+    if (!formGasto.descricao) return setError("Informe uma descrição.");
     setLoading(true);
     try {
       await api.post("/gastos/", {
@@ -376,13 +407,22 @@ export default function DashboardPage() {
       setSuccess("Gasto registrado!");
       setFormGasto({
         valor: "", descricao: "", categoria: "Alimentação",
-        essencial: false, data: new Date().toISOString().split("T")[0]
+        essencial: false, data: agora.toISOString().split("T")[0]
       });
       await fetchDados();
       setTimeout(() => { setModalGasto(false); setSuccess(""); }, 1200);
     } catch (err) {
       setError(err.response?.data?.detail || "Erro ao registrar.");
     } finally { setLoading(false); }
+  }
+
+  async function handleDeletar() {
+    if (!gastoParaDeletar) return;
+    try {
+      await api.delete(`/gastos/${gastoParaDeletar.id}`);
+      setGastoParaDeletar(null);
+      await fetchDados();
+    } catch { }
   }
 
   async function toggleEssencial(gasto) {
@@ -393,10 +433,11 @@ export default function DashboardPage() {
   }
 
   const pct = resumo?.percentual_gasto || 0;
-  const inicial = user?.email?.[0]?.toUpperCase() || "U";
+  const saldo = resumo?.saldo || 0;
   const maxCat = resumo?.por_categoria
     ? Math.max(...Object.values(resumo.por_categoria))
     : 1;
+  const inicial = user?.email?.[0]?.toUpperCase() || "U";
 
   return (
     <>
@@ -404,18 +445,14 @@ export default function DashboardPage() {
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
       <div className="layout">
-        {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="sidebar-brand">
             <div className="sidebar-brand-icon">💰</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item active" href="/dashboard">
-            <span className="nav-icon">📊</span> Dashboard
-          </a>
-          <a className="nav-item" href="/graficos">
-            <span className="nav-icon">📈</span> Gráficos
-          </a>
+          <a className="nav-item active" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
+          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
+          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
               <span className="nav-icon">🚪</span> Sair
@@ -423,42 +460,45 @@ export default function DashboardPage() {
           </div>
         </aside>
 
-        {/* MAIN */}
         <main className="main">
           <div className="topbar">
-            <h1 className="page-title">
-              Dashboard — {MESES[new Date().getMonth()]} {new Date().getFullYear()}
-            </h1>
+            <h1 className="page-title">Dashboard</h1>
             <div className="user-badge">
               <div className="user-avatar">{inicial}</div>
               {user?.email}
             </div>
           </div>
 
-          {/* CARDS TOPO */}
+          {/* Seletor de mês */}
+          <div className="mes-selector">
+            <label>Visualizando:</label>
+            <select value={mes} onChange={e => setMes(Number(e.target.value))}>
+              {MESES.map((m, i) => (
+                <option key={i} value={i + 1}>{m} {ano}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Cards */}
           <div className="cards-grid">
             <div className="card">
               <p className="card-label">Renda do mês</p>
               <p className="card-value green">{fmt(resumo?.total_renda)}</p>
-              <p className="card-sub">
-                {renda ? `${MESES[renda.mes - 1]} ${renda.ano}` : "Não cadastrada"}
-              </p>
+              <p className="card-sub">{renda ? `${MESES[renda.mes - 1]} ${renda.ano}` : "Não cadastrada"}</p>
             </div>
             <div className="card">
               <p className="card-label">Total de gastos</p>
               <p className="card-value red">{fmt(resumo?.total_gastos)}</p>
-              <p className="card-sub">{resumo?.quantidade_gastos || 0} gasto(s) este mês</p>
+              <p className="card-sub">{resumo?.quantidade_gastos || 0} gasto(s) no mês</p>
             </div>
             <div className="card">
               <p className="card-label">Saldo disponível</p>
-              <p className={`card-value ${(resumo?.saldo || 0) >= 0 ? "blue" : "red"}`}>
-                {fmt(resumo?.saldo)}
-              </p>
+              <p className={`card-value ${saldo >= 0 ? "blue" : "red"}`}>{fmt(saldo)}</p>
               <p className="card-sub">Renda − Gastos</p>
             </div>
           </div>
 
-          {/* BOTÕES */}
+          {/* Botões */}
           <div className="actions-row">
             <button className="btn-add" onClick={() => { setError(""); setSuccess(""); setModalRenda(true); }}>
               💵 {renda ? "Atualizar renda" : "Cadastrar renda"}
@@ -468,13 +508,10 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          {/* RESUMO FINANCEIRO — UC07 */}
+          {/* Resumo financeiro */}
           <div className="resumo-grid">
-
-            {/* COLUNA 1 — Resumo geral */}
             <div className="resumo-card">
               <p className="resumo-title">📋 Resumo financeiro mensal</p>
-
               <div className="resumo-row">
                 <span className="resumo-row-label">💵 Renda total</span>
                 <span className="resumo-row-value green">{fmt(resumo?.total_renda)}</span>
@@ -484,7 +521,7 @@ export default function DashboardPage() {
                 <span className="resumo-row-value red">{fmt(resumo?.total_gastos)}</span>
               </div>
               <div className="resumo-row">
-                <span className="resumo-row-label">✅ Gastos essenciais</span>
+                <span className="resumo-row-label">✅ Essenciais</span>
                 <span className="resumo-row-value">{fmt(resumo?.total_essencial)}</span>
               </div>
               <div className="resumo-row">
@@ -493,24 +530,15 @@ export default function DashboardPage() {
               </div>
               <div className="resumo-row">
                 <span className="resumo-row-label">💰 Saldo final</span>
-                <span className={`resumo-row-value ${(resumo?.saldo || 0) >= 0 ? "green" : "red"}`}>
-                  {fmt(resumo?.saldo)}
-                </span>
+                <span className={`resumo-row-value ${saldo >= 0 ? "green" : "red"}`}>{fmt(saldo)}</span>
               </div>
-
-              {/* Barra de progresso de gastos */}
               <div className="progress-wrap">
                 <div className="progress-label">
                   <span>Comprometido da renda</span>
-                  <span style={{ fontWeight: 700, color: pct > 90 ? "#ef4444" : pct > 70 ? "#f59e0b" : "#10b981" }}>
-                    {pct}%
-                  </span>
+                  <span style={{ fontWeight: 700, color: pct > 90 ? "#ef4444" : pct > 70 ? "#f59e0b" : "#10b981" }}>{pct}%</span>
                 </div>
                 <div className="progress-bar">
-                  <div
-                    className={`progress-fill ${getProgressClass(pct)}`}
-                    style={{ width: `${Math.min(pct, 100)}%` }}
-                  />
+                  <div className={`progress-fill ${getProgressClass(pct)}`} style={{ width: `${Math.min(pct, 100)}%` }} />
                 </div>
                 <p style={{ fontSize: 12, color: "#94a3b8", marginTop: 6 }}>
                   {pct < 70 ? "✅ Situação saudável" : pct < 90 ? "⚠️ Atenção aos gastos" : "🚨 Gastos elevados!"}
@@ -518,10 +546,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* COLUNA 2 — Por categoria */}
             <div className="resumo-card">
               <p className="resumo-title">🗂️ Gastos por categoria</p>
-
               {resumo?.por_categoria && Object.keys(resumo.por_categoria).length > 0 ? (
                 Object.entries(resumo.por_categoria)
                   .sort((a, b) => b[1] - a[1])
@@ -533,30 +559,24 @@ export default function DashboardPage() {
                       </div>
                       <div className="cat-bar-wrap">
                         <div className="cat-bar">
-                          <div
-                            className="cat-bar-fill"
-                            style={{ width: `${(val / maxCat) * 100}%` }}
-                          />
+                          <div className="cat-bar-fill" style={{ width: `${(val / maxCat) * 100}%` }} />
                         </div>
                       </div>
                       <span className="cat-value">{fmt(val)}</span>
                     </div>
                   ))
               ) : (
-                <div className="empty-state">
-                  <div className="empty-icon">📂</div>
-                  <p>Nenhum gasto registrado ainda.</p>
-                </div>
+                <div className="empty-state"><p>Nenhum gasto registrado.</p></div>
               )}
             </div>
           </div>
 
-          {/* LISTA DE GASTOS */}
-          <p className="section-title">Todos os gastos do mês</p>
+          {/* Lista de gastos */}
+          <p className="section-title">Todos os gastos — {MESES[mes - 1]} {ano}</p>
           {gastos.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">💸</div>
-              <p>Nenhum gasto registrado este mês.</p>
+              <p>Nenhum gasto registrado em {MESES[mes - 1]}.</p>
             </div>
           ) : (
             <div className="gastos-list">
@@ -566,9 +586,7 @@ export default function DashboardPage() {
                     <div className="gasto-icon">{CATEGORIA_ICONES[g.categoria] || "📦"}</div>
                     <div>
                       <p className="gasto-desc">{g.descricao}</p>
-                      <p className="gasto-meta">
-                        {g.categoria} · {new Date(g.data).toLocaleDateString("pt-BR")}
-                      </p>
+                      <p className="gasto-meta">{g.categoria} · {new Date(g.data).toLocaleDateString("pt-BR")}</p>
                     </div>
                   </div>
                   <div className="gasto-right">
@@ -579,6 +597,13 @@ export default function DashboardPage() {
                       title="Clique para alternar"
                     >
                       {g.essencial ? "✅ Essencial" : "⚠️ Não essencial"}
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => setGastoParaDeletar(g)}
+                      title="Excluir gasto"
+                    >
+                      🗑
                     </button>
                   </div>
                 </div>
@@ -605,8 +630,7 @@ export default function DashboardPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">Descrição (opcional)</label>
-                <input type="text" className="form-input"
-                  placeholder="Ex: Salário, Freelance..."
+                <input type="text" className="form-input" placeholder="Ex: Salário..."
                   value={formRenda.descricao}
                   onChange={e => setFormRenda({ ...formRenda, descricao: e.target.value })} />
               </div>
@@ -660,8 +684,7 @@ export default function DashboardPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">Descrição</label>
-                <input type="text" className="form-input"
-                  placeholder="Ex: Mercado, Uber, Netflix..."
+                <input type="text" className="form-input" placeholder="Ex: Mercado, Uber..."
                   value={formGasto.descricao}
                   onChange={e => setFormGasto({ ...formGasto, descricao: e.target.value })} />
               </div>
@@ -688,6 +711,23 @@ export default function DashboardPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* CONFIRMAÇÃO DE EXCLUSÃO */}
+      {gastoParaDeletar && (
+        <div className="confirm-overlay">
+          <div className="confirm-box">
+            <div className="confirm-icon">🗑️</div>
+            <p className="confirm-title">Excluir gasto?</p>
+            <p className="confirm-sub">
+              Tem certeza que quer excluir <strong>"{gastoParaDeletar.descricao}"</strong> de {fmt(gastoParaDeletar.valor)}? Essa ação não pode ser desfeita.
+            </p>
+            <div className="confirm-actions">
+              <button className="btn-secondary" onClick={() => setGastoParaDeletar(null)}>Cancelar</button>
+              <button className="btn-danger" onClick={handleDeletar}>Sim, excluir</button>
+            </div>
           </div>
         </div>
       )}
