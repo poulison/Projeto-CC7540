@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.deps import get_current_user
-from app.services.resumo_service import get_resumo_mensal
+from app.services.resumo_service import get_resumo_mensal, get_metricas
 from app.models.user import User
 from datetime import datetime
 
@@ -24,3 +24,10 @@ def resumo_mensal_periodo(
     current_user: User = Depends(get_current_user)
 ):
     return get_resumo_mensal(db, current_user.id, mes, ano)
+
+@router.get("/metricas")
+def metricas(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_metricas(db, current_user.id)

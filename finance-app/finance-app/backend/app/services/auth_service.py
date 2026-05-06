@@ -35,3 +35,14 @@ def authenticate_user(db: Session, email: str, password: str):
         )
     token = create_access_token(data={"sub": str(user.id)})
     return {"access_token": token, "token_type": "bearer"}
+
+def update_password(db: Session, user_id: int, senha_atual: str, nova_senha: str):
+    from app.models.user import User
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+    if not verify_password(senha_atual, user.hashed_password):
+        raise HTTPException(status_code=400, detail="Senha atual incorreta.")
+    user.hashed_password = hash_password(nova_senha)
+    db.commit()
+    return {"message": "Senha alterada com sucesso."}

@@ -18,3 +18,7 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+class UpdatePassword(BaseModel):
+    senha_atual: str
+    nova_senha: str

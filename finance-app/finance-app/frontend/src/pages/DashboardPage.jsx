@@ -453,6 +453,8 @@ export default function DashboardPage() {
           <a className="nav-item active" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
           <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
           <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
+          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
+          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
               <span className="nav-icon">🚪</span> Sair
