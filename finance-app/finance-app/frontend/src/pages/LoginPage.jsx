@@ -209,23 +209,39 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    if (!form.email || !form.password)
-      return setError("Preencha todos os campos.");
+    if (!form.email || !form.password) {
+      setError("Preencha todos os campos.");
+      return;
+    }
 
     setLoading(true);
+
     try {
       const res = await api.post("/auth/login", {
         email: form.email,
         password: form.password,
       });
 
-      // Salva o token e os dados do usuário no contexto global
-      login({ email: form.email }, res.data.access_token);
+      if (!res.data?.access_token) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
 
-      // Redireciona para o dashboard (próxima etapa)
+      login({ email: form.email }, res.data.access_token);
       window.location.href = "/dashboard";
     } catch (err) {
-      setError(err.response?.data?.detail || "E-mail ou senha inválidos.");
+      const status = err.response?.status;
+      const detail = err.response?.data?.detail;
+
+      if (Array.isArray(detail)) {
+        setError("E-mail inválido.");
+      } else if (status === 404) {
+        setError("Conta não existe.");
+      } else if (status === 401) {
+        setError("Senha incorreta.");
+      } else {
+        setError("Erro ao fazer login.");
+      }
     } finally {
       setLoading(false);
     }
@@ -234,14 +250,14 @@ export default function LoginPage() {
   return (
     <>
       <style>{styles}</style>
-      <div className="page">
 
-        {/* ESQUERDA */}
+      <div className="page">
         <div className="left-panel">
           <div className="brand">
             <div className="brand-icon">💰</div>
             <span className="brand-name">FinanceApp</span>
           </div>
+
           <div className="hero-content">
             <span className="hero-tag">Bem-vindo de volta</span>
             <h1 className="hero-title">
@@ -254,7 +270,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* DIREITA */}
         <div className="right-panel">
           <div className="form-card">
             <div className="form-header">
@@ -263,12 +278,18 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} noValidate>
-              {error && <div className="alert alert-error">⚠️ {error}</div>}
+              {error && (
+                <div className="alert alert-error">
+                  ⚠️ {error}
+                </div>
+              )}
 
               <div className="form-group">
                 <label className="form-label" htmlFor="email">E-mail</label>
                 <input
-                  id="email" name="email" type="email"
+                  id="email"
+                  name="email"
+                  type="email"
                   className={`form-input ${error ? "error" : ""}`}
                   placeholder="seu@email.com"
                   value={form.email}
@@ -280,7 +301,9 @@ export default function LoginPage() {
               <div className="form-group">
                 <label className="form-label" htmlFor="password">Senha</label>
                 <input
-                  id="password" name="password" type="password"
+                  id="password"
+                  name="password"
+                  type="password"
                   className={`form-input ${error ? "error" : ""}`}
                   placeholder="Sua senha"
                   value={form.password}
@@ -302,7 +325,6 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
-
       </div>
     </>
   );

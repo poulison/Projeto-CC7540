@@ -216,6 +216,11 @@ export default function GraficosPage() {
   const [resumo, setResumo] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  function handleLogout() {
+    logout();
+    window.location.href = "/login";
+  }
+
   useEffect(() => {
     async function fetchResumo() {
       setLoading(true);
@@ -266,16 +271,15 @@ export default function GraficosPage() {
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
           <a className="nav-item" href="/dashboard">
-            <span className="nav-icon">📊</span> Dashboard
+            <span className="nav-icon">📊</span> Visão Geral
           </a>
           <a className="nav-item" href="/classificar">
-            <span className="nav-icon">🏷️</span> Classificar
+            <span className="nav-icon">🏷️</span> Transações
           </a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
-          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
-          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
+          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Análises</a>
+          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Meu Perfil</a>
           <div className="sidebar-bottom">
-            <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
+            <button className="nav-item" onClick={handleLogout} style={{ color: "#ef4444" }}>
               <span className="nav-icon">🚪</span> Sair
             </button>
           </div>
