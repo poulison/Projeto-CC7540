@@ -353,11 +353,6 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  function handleLogout() {
-    logout();
-    window.location.href = "/login";
-  }
-
   async function fetchDados() {
     try {
       const [res, g, r] = await Promise.all([
@@ -455,12 +450,14 @@ export default function DashboardPage() {
             <div className="sidebar-brand-icon">💰</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item active" href="/dashboard"><span className="nav-icon">📊</span> Visão Geral</a>
-          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Transações</a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Análises</a>
-          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Meu Perfil</a>
+          <a className="nav-item active" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
+          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
+          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
+          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
+          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
+          <a className="nav-item" href="/historico"><span className="nav-icon">📅</span> Histórico</a>
           <div className="sidebar-bottom">
-            <button className="nav-item" onClick={handleLogout} style={{ color: "#ef4444" }}>
+            <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
               <span className="nav-icon">🚪</span> Sair
             </button>
           </div>

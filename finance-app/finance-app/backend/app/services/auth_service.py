@@ -28,25 +28,13 @@ def register_user(db: Session, user_data: UserCreate):
 
 def authenticate_user(db: Session, email: str, password: str):
     user = get_user_by_email(db, email)
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Conta não existe."
-        )
-
-    if not verify_password(password, user.hashed_password):
+    if not user or not verify_password(password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Senha incorreta."
+            detail="E-mail ou senha inválidos."
         )
-
     token = create_access_token(data={"sub": str(user.id)})
-
-    return {
-        "access_token": token,
-        "token_type": "bearer"
-    }
+    return {"access_token": token, "token_type": "bearer"}
 
 def update_password(db: Session, user_id: int, senha_atual: str, nova_senha: str):
     from app.models.user import User
