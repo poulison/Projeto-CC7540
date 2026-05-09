@@ -327,6 +327,8 @@ export default function RegisterPage() {
 
     if (!form.email || !form.password || !form.confirm)
       return setError("Preencha todos os campos.");
+    if (!/\S+@\S+\.\S+/.test(form.email))
+      return setError("Informe um e-mail válido.");
     if (form.password.length < 6)
       return setError("A senha deve ter no mínimo 6 caracteres.");
     if (form.password !== form.confirm)
@@ -340,7 +342,14 @@ export default function RegisterPage() {
       });
       setSuccess(true);
     } catch (err) {
-      setError(err.response?.data?.detail || "Erro ao criar conta. Tente novamente.");
+      const detail = err.response?.data?.detail;
+      if (typeof detail === "string") {
+        setError(detail);
+      } else if (Array.isArray(detail)) {
+        setError(detail.map((d) => d.msg || JSON.stringify(d)).join("; "));
+      } else {
+        setError("Erro ao criar conta. Tente novamente.");
+      }
     } finally {
       setLoading(false);
     }

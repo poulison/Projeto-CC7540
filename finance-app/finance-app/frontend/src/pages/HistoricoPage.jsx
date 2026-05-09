@@ -20,7 +20,8 @@ const styles = `
     width: 36px; height: 36px;
     background: linear-gradient(135deg, #10b981, #34d399);
     border-radius: 10px; display: flex;
-    align-items: center; justify-content: center; font-size: 16px;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
   }
   .sidebar-brand-name {
     font-family: 'Playfair Display', serif;
@@ -164,6 +165,7 @@ export default function HistoricoPage() {
   const agora = new Date();
   const [ano, setAno] = useState(agora.getFullYear());
   const [historico, setHistorico] = useState(null);
+  const [ordenar, setOrdenar] = useState("mes");
 
   const inicial = user?.email?.[0]?.toUpperCase() || "U";
   const anos = [agora.getFullYear(), agora.getFullYear() - 1, agora.getFullYear() - 2];
@@ -201,18 +203,18 @@ export default function HistoricoPage() {
       <div className="layout">
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <div className="sidebar-brand-icon">💰</div>
+            <div className="sidebar-brand-icon">FA</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
-          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
-          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
-          <a className="nav-item active" href="/historico"><span className="nav-icon">📅</span> Histórico</a>
-          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
+          <a className="nav-item" href="/dashboard">Visão Geral</a>
+          <a className="nav-item" href="/classificar">Transações</a>
+          <a className="nav-item" href="/graficos">Análises</a>
+          <a className="nav-item" href="/perfil">Meu Perfil</a>
+          <a className="nav-item" href="/metricas">Métricas</a>
+          <a className="nav-item active" href="/historico">Histórico</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
-              <span className="nav-icon">🚪</span> Sair
+              Sair
             </button>
           </div>
         </aside>
@@ -254,6 +256,17 @@ export default function HistoricoPage() {
             </div>
           </div>
 
+          {/* Filtrar e ordenar - SCRUM-26 */}
+          <div className="sort-controls">
+            <label>Ordenar por:</label>
+            <select value={ordenar} onChange={e => setOrdenar(e.target.value)}>
+              <option value="mes">Mês</option>
+              <option value="gastos_desc">Maior gasto</option>
+              <option value="gastos_asc">Menor gasto</option>
+              <option value="saldo_desc">Maior saldo</option>
+            </select>
+          </div>
+
           {/* Tabela de meses */}
           <div className="table-card">
             <p className="table-title">Detalhamento mensal — {ano}</p>
@@ -271,7 +284,14 @@ export default function HistoricoPage() {
                 </tr>
               </thead>
               <tbody>
-                {meses.map((m, idx) => (
+                {[...meses]
+            .sort((a, b) => {
+              if (ordenar === "gastos_desc") return b.total_gastos - a.total_gastos;
+              if (ordenar === "gastos_asc") return a.total_gastos - b.total_gastos;
+              if (ordenar === "saldo_desc") return b.saldo - a.saldo;
+              return 0;
+            })
+            .map((m, idx) => (
                   <tr key={idx} className={ano === agora.getFullYear() && idx === agora.getMonth() ? "mes-atual" : ""}>
                     <td className="td-mes">{m.mes_nome}</td>
                     <td className="td-green">{fmt(m.total_renda)}</td>

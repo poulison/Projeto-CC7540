@@ -22,3 +22,5 @@ class LoginRequest(BaseModel):
 class UpdatePassword(BaseModel):
     senha_atual: str
     nova_senha: str
+class UpdateProfile(BaseModel):
+    nome: str = ""

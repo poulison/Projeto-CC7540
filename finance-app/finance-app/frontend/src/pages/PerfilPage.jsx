@@ -20,7 +20,8 @@ const styles = `
     width: 36px; height: 36px;
     background: linear-gradient(135deg, #10b981, #34d399);
     border-radius: 10px; display: flex;
-    align-items: center; justify-content: center; font-size: 16px;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
   }
   .sidebar-brand-name {
     font-family: 'Playfair Display', serif;
@@ -170,6 +171,9 @@ export default function PerfilPage() {
   const { user, logout } = useAuth();
   const [perfil, setPerfil] = useState(null);
   const [form, setForm] = useState({ senha_atual: "", nova_senha: "", confirmar: "" });
+  const [nome, setNome] = useState("");
+  const [nomeSuccess, setNomeSuccess] = useState("");
+  const [nomeError, setNomeError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -179,7 +183,7 @@ export default function PerfilPage() {
 
   useEffect(() => {
     api.get("/usuario/perfil")
-      .then(res => setPerfil(res.data))
+      .then(res => { setPerfil(res.data); setNome(res.data.nome || ""); })
       .catch(() => {});
   }, []);
 
@@ -201,7 +205,8 @@ export default function PerfilPage() {
       setSuccess("Senha alterada com sucesso!");
       setForm({ senha_atual: "", nova_senha: "", confirmar: "" });
     } catch (err) {
-      setError(err.response?.data?.detail || "Erro ao alterar senha.");
+      const detail = err.response?.data?.detail;
+      setError(typeof detail === "string" ? detail : Array.isArray(detail) ? detail.map((d) => d.msg || "").join("; ") : "Erro ao alterar senha.");
     } finally {
       setLoading(false);
     }
@@ -215,18 +220,18 @@ export default function PerfilPage() {
       <div className="layout">
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <div className="sidebar-brand-icon">💰</div>
+            <div className="sidebar-brand-icon">FA</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
-          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
-          <a className="nav-item active" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
-          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
-          <a className="nav-item" href="/historico"><span className="nav-icon">📅</span> Histórico</a>
+          <a className="nav-item" href="/dashboard">Visão Geral</a>
+          <a className="nav-item" href="/classificar">Transações</a>
+          <a className="nav-item" href="/graficos">Análises</a>
+          <a className="nav-item active" href="/perfil">Meu Perfil</a>
+          <a className="nav-item" href="/metricas">Métricas</a>
+          <a className="nav-item" href="/historico">Histórico</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
-              <span className="nav-icon">🚪</span> Sair
+              Sair
             </button>
           </div>
         </aside>
@@ -244,7 +249,7 @@ export default function PerfilPage() {
             <div className="card-header">
               <div className="avatar-big">{inicial}</div>
               <div className="card-header-info">
-                <h2>{user?.email}</h2>
+                <h2>{perfil?.nome || user?.email}</h2>
                 <p>Membro desde {perfil?.criado_em ? new Date(perfil.criado_em).toLocaleDateString("pt-BR") : "—"}</p>
               </div>
             </div>
@@ -264,6 +269,30 @@ export default function PerfilPage() {
                   : "—"}
               </span>
             </div>
+          </div>
+
+          <div className="card">
+            <p className="section-title">Editar perfil</p>
+            {nomeError && <div className="alert alert-error">⚠️ {nomeError}</div>}
+            {nomeSuccess && <div className="alert alert-success">✅ {nomeSuccess}</div>}
+            <div className="form-group">
+              <label className="form-label">Nome</label>
+              <input type="text" className="form-input"
+                placeholder="Seu nome completo"
+                value={nome}
+                onChange={e => { setNome(e.target.value); setNomeError(""); }} />
+            </div>
+            <button className="btn-primary" style={{ marginTop: 8 }}
+              onClick={async () => {
+                setNomeError(""); setNomeSuccess("");
+                try {
+                  await api.put("/usuario/atualizar-perfil", { nome });
+                  setNomeSuccess("Perfil atualizado com sucesso!");
+                  setTimeout(() => setNomeSuccess(""), 2500);
+                } catch { setNomeError("Erro ao atualizar perfil."); }
+              }}>
+              Salvar alterações
+            </button>
           </div>
 
           <div className="card">

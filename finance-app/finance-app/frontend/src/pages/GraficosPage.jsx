@@ -35,7 +35,8 @@ const styles = `
     width: 36px; height: 36px;
     background: linear-gradient(135deg, #10b981, #34d399);
     border-radius: 10px; display: flex;
-    align-items: center; justify-content: center; font-size: 16px;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
   }
   .sidebar-brand-name {
     font-family: 'Playfair Display', serif;
@@ -262,22 +263,18 @@ export default function GraficosPage() {
         {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <div className="sidebar-brand-icon">💰</div>
+            <div className="sidebar-brand-icon">FA</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item" href="/dashboard">
-            <span className="nav-icon">📊</span> Dashboard
-          </a>
-          <a className="nav-item" href="/classificar">
-            <span className="nav-icon">🏷️</span> Classificar
-          </a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
-          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
-          <a className="nav-item" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
-          <a className="nav-item" href="/historico"><span className="nav-icon">📅</span> Histórico</a>
+          <a className="nav-item" href="/dashboard">Visão Geral</a>
+          <a className="nav-item" href="/classificar">Transações</a>
+          <a className="nav-item active" href="/graficos">Análises</a>
+          <a className="nav-item" href="/perfil">Meu Perfil</a>
+          <a className="nav-item" href="/metricas">Métricas</a>
+          <a className="nav-item" href="/historico">Histórico</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
-              <span className="nav-icon">🚪</span> Sair
+              Sair
             </button>
           </div>
         </aside>

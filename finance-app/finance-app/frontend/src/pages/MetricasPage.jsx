@@ -24,7 +24,8 @@ const styles = `
     width: 36px; height: 36px;
     background: linear-gradient(135deg, #10b981, #34d399);
     border-radius: 10px; display: flex;
-    align-items: center; justify-content: center; font-size: 16px;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
   }
   .sidebar-brand-name {
     font-family: 'Playfair Display', serif;
@@ -130,6 +131,7 @@ export default function MetricasPage() {
   const { user, logout } = useAuth();
   const [metricas, setMetricas] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [periodo, setPeriodo] = useState(6);
   const inicial = user?.email?.[0]?.toUpperCase() || "U";
 
   useEffect(() => {
@@ -139,13 +141,15 @@ export default function MetricasPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const dadosBarra = metricas?.meses?.map(m => ({
+  const mesesFiltrados = metricas?.meses?.slice(-periodo) || [];
+
+  const dadosBarra = mesesFiltrados.map(m => ({
     name: m.mes_nome,
     Gastos: m.total_gastos,
     Renda: m.total_renda,
   })) || [];
 
-  const dadosLinha = metricas?.meses?.map(m => ({
+  const dadosLinha = mesesFiltrados.map(m => ({
     name: m.mes_nome,
     Saldo: m.saldo,
   })) || [];
@@ -162,18 +166,18 @@ export default function MetricasPage() {
       <div className="layout">
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <div className="sidebar-brand-icon">💰</div>
+            <div className="sidebar-brand-icon">FA</div>
             <span className="sidebar-brand-name">FinanceApp</span>
           </div>
-          <a className="nav-item" href="/dashboard"><span className="nav-icon">📊</span> Dashboard</a>
-          <a className="nav-item" href="/classificar"><span className="nav-icon">🏷️</span> Classificar</a>
-          <a className="nav-item" href="/graficos"><span className="nav-icon">📈</span> Gráficos</a>
-          <a className="nav-item active" href="/metricas"><span className="nav-icon">📉</span> Métricas</a>
-          <a className="nav-item" href="/perfil"><span className="nav-icon">👤</span> Perfil</a>
-          <a className="nav-item" href="/historico"><span className="nav-icon">📅</span> Histórico</a>
+          <a className="nav-item" href="/dashboard">Visão Geral</a>
+          <a className="nav-item" href="/classificar">Transações</a>
+          <a className="nav-item" href="/graficos">Análises</a>
+          <a className="nav-item" href="/perfil">Meu Perfil</a>
+          <a className="nav-item active" href="/metricas">Métricas</a>
+          <a className="nav-item" href="/historico">Histórico</a>
           <div className="sidebar-bottom">
             <button className="nav-item" onClick={logout} style={{ color: "#ef4444" }}>
-              <span className="nav-icon">🚪</span> Sair
+              Sair
             </button>
           </div>
         </aside>
@@ -185,6 +189,24 @@ export default function MetricasPage() {
               <div className="user-avatar">{inicial}</div>
               {user?.email}
             </div>
+          </div>
+
+          {/* Filtro por período - SCRUM-25 */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: "#374151" }}>Período:</span>
+            {[3, 6, 12].map(p => (
+              <button key={p}
+                onClick={() => setPeriodo(p)}
+                style={{
+                  padding: "6px 16px", borderRadius: 8, border: "1.5px solid",
+                  cursor: "pointer", fontSize: 13, fontWeight: 600,
+                  borderColor: periodo === p ? "#10b981" : "#e2e8f0",
+                  background: periodo === p ? "#f0fdf4" : "#fff",
+                  color: periodo === p ? "#10b981" : "#64748b"
+                }}>
+                {p} meses
+              </button>
+            ))}
           </div>
 
           {loading ? (

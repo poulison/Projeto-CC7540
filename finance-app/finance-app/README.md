@@ -1,4 +1,4 @@
-# Finance App 
+# Finance App 💰
 
 Sistema pessoal de gerenciamento financeiro - Centro Universitário FEI
 
@@ -24,7 +24,7 @@ cd finance-app
 
 ### 2. Configure o .env
 O arquivo `.env` já está criado com valores padrão para desenvolvimento.
->  Em produção, altere o `SECRET_KEY` e as senhas do banco!
+> ⚠️ Em produção, altere o `SECRET_KEY` e as senhas do banco!
 
 ### 3. Suba os containers
 ```bash

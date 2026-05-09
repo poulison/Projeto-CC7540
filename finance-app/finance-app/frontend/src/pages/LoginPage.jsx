@@ -212,6 +212,9 @@ export default function LoginPage() {
     if (!form.email || !form.password)
       return setError("Preencha todos os campos.");
 
+    if (!/\S+@\S+\.\S+/.test(form.email))
+      return setError("Informe um e-mail válido.");
+
     setLoading(true);
     try {
       const res = await api.post("/auth/login", {
@@ -223,9 +226,16 @@ export default function LoginPage() {
       login({ email: form.email }, res.data.access_token);
 
       // Redireciona para o dashboard (próxima etapa)
-      window.location.href = "/dashboard";
+      window.location.replace("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.detail || "E-mail ou senha inválidos.");
+      const detail = err.response?.data?.detail;
+      if (typeof detail === "string") {
+        setError(detail);
+      } else if (Array.isArray(detail)) {
+        setError(detail.map((d) => d.msg || JSON.stringify(d)).join("; "));
+      } else {
+        setError("E-mail ou senha inválidos.");
+      }
     } finally {
       setLoading(false);
     }
