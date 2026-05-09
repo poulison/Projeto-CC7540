@@ -393,7 +393,7 @@ export default function GraficosPage() {
                     <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} />
                     <YAxis
                       tick={{ fontSize: 12, fill: "#64748b" }}
-                      tickFormatter={v => `R$${(v / 1000).toFixed(0)}k`}
+                      tickFormatter={v => `R$${Number(v).toLocaleString("pt-BR")}`}
                     />
                     <Tooltip
                       formatter={(value) => [fmt(value), "Valor"]}

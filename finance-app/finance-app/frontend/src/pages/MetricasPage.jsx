@@ -154,8 +154,31 @@ export default function MetricasPage() {
     Saldo: m.saldo,
   })) || [];
 
-  const maxCat = metricas?.todas_categorias
-    ? Math.max(...Object.values(metricas.todas_categorias))
+  const totalGastosPeriodo = mesesFiltrados.reduce((acc, m) => acc + Number(m.total_gastos || 0), 0);
+  const totalRendaPeriodo = mesesFiltrados.reduce((acc, m) => acc + Number(m.total_renda || 0), 0);
+
+  const mediaGastosPeriodo = totalGastosPeriodo / periodo;
+  const mediaRendaPeriodo = totalRendaPeriodo / periodo;
+
+  const mesMaiorGastoPeriodo = mesesFiltrados.reduce((maior, atual) => {
+    return Number(atual.total_gastos || 0) > Number(maior.total_gastos || 0) ? atual : maior;
+  }, mesesFiltrados[0] || {});
+
+  const categoriasPeriodo = mesesFiltrados.reduce((acc, mes) => {
+    const categorias = mes.por_categoria || {};
+
+    Object.entries(categorias).forEach(([categoria, valor]) => {
+      acc[categoria] = (acc[categoria] || 0) + Number(valor || 0);
+    });
+
+    return acc;
+  }, {});
+
+  const categoriaTopPeriodo = Object.entries(categoriasPeriodo)
+    .sort((a, b) => b[1] - a[1])[0];
+
+  const maxCat = Object.keys(categoriasPeriodo).length
+    ? Math.max(...Object.values(categoriasPeriodo))
     : 1;
 
   return (
@@ -194,7 +217,7 @@ export default function MetricasPage() {
           {/* Filtro por período - SCRUM-25 */}
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: "#374151" }}>Período:</span>
-            {[3, 6, 12].map(p => (
+            {[3, 6].map(p => (
               <button key={p}
                 onClick={() => setPeriodo(p)}
                 style={{
@@ -222,34 +245,34 @@ export default function MetricasPage() {
               <div className="kpi-grid">
                 <div className="kpi-card">
                   <p className="kpi-label">Média de gastos</p>
-                  <p className="kpi-value red">{fmt(metricas.media_gastos)}</p>
-                  <p className="kpi-sub">últimos 6 meses</p>
+                  <p className="kpi-value red">{fmt(mediaGastosPeriodo)}</p>
+                  <p className="kpi-sub">últimos {periodo} meses</p>
                 </div>
                 <div className="kpi-card">
                   <p className="kpi-label">Média de renda</p>
-                  <p className="kpi-value green">{fmt(metricas.media_renda)}</p>
-                  <p className="kpi-sub">últimos 6 meses</p>
+                  <p className="kpi-value green">{fmt(mediaRendaPeriodo)}</p>
+                  <p className="kpi-sub">últimos {periodo} meses</p>
                 </div>
                 <div className="kpi-card">
                   <p className="kpi-label">Mês com mais gastos</p>
-                  <p className="kpi-value orange">{metricas.mes_maior_gasto}</p>
-                  <p className="kpi-sub">{fmt(metricas.valor_maior_gasto)}</p>
+                  <p className="kpi-value orange">{mesMaiorGastoPeriodo?.mes_nome || "—"}</p>
+                  <p className="kpi-sub">{fmt(mesMaiorGastoPeriodo?.total_gastos || 0)}</p>
                 </div>
                 <div className="kpi-card">
                   <p className="kpi-label">Categoria top</p>
-                  <p className="kpi-value blue">{metricas.categoria_top}</p>
-                  <p className="kpi-sub">{fmt(metricas.valor_categoria_top)} no período</p>
+                  <p className="kpi-value blue">{categoriaTopPeriodo?.[0] || "—"}</p>
+                  <p className="kpi-sub">{fmt(categoriaTopPeriodo?.[1] || 0)} no período</p>
                 </div>
               </div>
 
               {/* Gráfico de barras — Renda vs Gastos */}
               <div className="chart-card-full">
-                <p className="chart-title">Renda vs Gastos — últimos 6 meses</p>
+                <p className="chart-title">Renda vs Gastos — últimos {periodo} meses</p>
                 <ResponsiveContainer width="100%" height={260}>
                   <BarChart data={dadosBarra} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} />
-                    <YAxis tick={{ fontSize: 12, fill: "#64748b" }} tickFormatter={v => `R$${(v/1000).toFixed(0)}k`} />
+                    <YAxis tick={{ fontSize: 12, fill: "#64748b" }} tickFormatter={v => `R$${Number(v).toLocaleString("pt-BR")}`} />
                     <Tooltip formatter={v => fmt(v)} contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }} />
                     <Bar dataKey="Renda" fill="#10b981" radius={[6, 6, 0, 0]} />
                     <Bar dataKey="Gastos" fill="#ef4444" radius={[6, 6, 0, 0]} />
@@ -265,7 +288,7 @@ export default function MetricasPage() {
                     <LineChart data={dadosLinha} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} />
-                      <YAxis tick={{ fontSize: 12, fill: "#64748b" }} tickFormatter={v => `R$${(v/1000).toFixed(0)}k`} />
+                      <YAxis tick={{ fontSize: 12, fill: "#64748b" }} tickFormatter={v => `R$${Number(v).toLocaleString("pt-BR")}`} />
                       <Tooltip formatter={v => fmt(v)} contentStyle={{ borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 13 }} />
                       <Line type="monotone" dataKey="Saldo" stroke="#3b82f6" strokeWidth={2} dot={{ fill: "#3b82f6", r: 4 }} />
                     </LineChart>
@@ -274,9 +297,9 @@ export default function MetricasPage() {
 
                 {/* Categorias acumuladas */}
                 <div className="chart-card">
-                  <p className="chart-title">Gastos por categoria (6 meses)</p>
+                  <p className="chart-title">Gastos por categoria ({periodo} meses)</p>
                   <div className="cat-list">
-                    {Object.entries(metricas.todas_categorias)
+                    {Object.entries(categoriasPeriodo)
                       .sort((a, b) => b[1] - a[1])
                       .map(([cat, val]) => (
                         <div className="cat-item" key={cat}>
