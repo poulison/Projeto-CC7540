@@ -1,3 +1,4 @@
+
 #  | APP de controle financeiro 
 
 ## Time
@@ -18,3 +19,15 @@ Para mais informações acesse a wiki do git, ou clique [aqui](https://github.co
 ## Objetivo Sprint 1
 Para o primeiro sprint temos o objetivo de começar e implementar os funcionamentos basicos do nosso site, definimos as historias de usuário mais relevantes e decidimos desenvolvê-las para essa primeira parte.
 <img width="1618" height="776" alt="image" src="https://github.com/user-attachments/assets/ca72fca7-f0e0-4d44-b049-b9b01f17c504" />
+
+## Time Sprint 2
+
+|     Integrantes           |Funções             |
+|------------------------|----------------------|
+|Paulo Andre de Oliveira Hirata|Product Owner          |
+| Eric Song Watanabe |Scrum Master           |
+| Victor Pimentel Lario    |Dev Team               |  
+|Rafael Iamashita Becsei |Dev Team        |  
+|Victor Merker Binda    |Dev Team               |
+
+## Objetivo Sprint 2
