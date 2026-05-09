@@ -228,13 +228,15 @@ export default function LoginPage() {
       // Redireciona para o dashboard (próxima etapa)
       window.location.replace("/dashboard");
     } catch (err) {
+      const status = err.response?.status;
       const detail = err.response?.data?.detail;
-      if (typeof detail === "string") {
-        setError(detail);
-      } else if (Array.isArray(detail)) {
-        setError(detail.map((d) => d.msg || JSON.stringify(d)).join("; "));
+
+      if (Array.isArray(detail)) {
+        setError("E-mail inválido.");
+      } else if (status === 401) {
+        setError("E-mail ou senha incorretos.");
       } else {
-        setError("E-mail ou senha inválidos.");
+        setError("Erro ao fazer login.");
       }
     } finally {
       setLoading(false);

@@ -179,7 +179,11 @@ export default function PerfilPage() {
   const [success, setSuccess] = useState("");
 
   const strength = getStrength(form.nova_senha);
-  const inicial = user?.email?.[0]?.toUpperCase() || "U";
+  const inicial =
+    nome.trim().charAt(0).toUpperCase() ||
+    perfil?.nome?.trim()?.charAt(0)?.toUpperCase() ||
+    user?.email?.charAt(0)?.toUpperCase() ||
+    "U";
 
   useEffect(() => {
     api.get("/usuario/perfil")
@@ -241,7 +245,7 @@ export default function PerfilPage() {
             <h1 className="page-title">Meu Perfil</h1>
             <div className="user-badge">
               <div className="user-avatar">{inicial}</div>
-              {user?.email}
+              {perfil?.nome || user?.email}
             </div>
           </div>
 
@@ -272,7 +276,7 @@ export default function PerfilPage() {
           </div>
 
           <div className="card">
-            <p className="section-title">Editar perfil</p>
+            <p className="section-title">Editar nome</p>
             {nomeError && <div className="alert alert-error">⚠️ {nomeError}</div>}
             {nomeSuccess && <div className="alert alert-success">✅ {nomeSuccess}</div>}
             <div className="form-group">
@@ -284,12 +288,31 @@ export default function PerfilPage() {
             </div>
             <button className="btn-primary" style={{ marginTop: 8 }}
               onClick={async () => {
-                setNomeError(""); setNomeSuccess("");
+                setNomeError("");
+                setNomeSuccess("");
+
+                const nomeTratado = nome.trim();
+
+                if (!nomeTratado) {
+                  setNomeError("Informe seu nome.");
+                  return;
+                }
+
+                if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nomeTratado)) {
+                  setNomeError("O nome deve conter apenas letras e espaços.");
+                  return;
+                }
+
                 try {
-                  await api.put("/usuario/atualizar-perfil", { nome });
+                  await api.put("/usuario/atualizar-perfil", { nome: nomeTratado });
+                  setNome(nomeTratado);
+                  setPerfil({ ...perfil, nome: nomeTratado });
                   setNomeSuccess("Perfil atualizado com sucesso!");
                   setTimeout(() => setNomeSuccess(""), 2500);
-                } catch { setNomeError("Erro ao atualizar perfil."); }
+                } catch (err) {
+                  const detail = err.response?.data?.detail;
+                  setNomeError(typeof detail === "string" ? detail : "Erro ao atualizar perfil.");
+                }
               }}>
               Salvar alterações
             </button>
